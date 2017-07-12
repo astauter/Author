@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import history from '../history';
-import { logOutUser } from '../redux/currentUser'
+import { logOutUser } from '../redux/currentUser';
+import isLoggedIn from '../utilityFuncs';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -39,24 +40,28 @@ class Navbar extends React.Component {
               </li>
             </ul>
             { this.renderLogout() }
-            { this.renderLoginSignup() }
+            { this.renderLoginSignup(this.props.currentUser) }
           </div>
         </div>
       </nav>
     );
   }
 
-  renderLoginSignup() {
-    return (
-      <ul className="nav navbar-nav navbar-right">
-        <li>
-         <NavLink to="/signup" activeClassName="active">signup</NavLink>
-        </li>
-        <li>
-          <NavLink to="/login" activeClassName="active">login</NavLink>
-        </li>
-      </ul>
-    );
+  renderLoginSignup(currentUser) {
+    if (isLoggedIn(currentUser)) {
+      return null;
+    } else {
+      return (
+        <ul className="nav navbar-nav navbar-right">
+          <li>
+          <NavLink to="/signup" activeClassName="active">signup</NavLink>
+          </li>
+          <li>
+            <NavLink to="/login" activeClassName="active">login</NavLink>
+          </li>
+        </ul>
+      );
+    }
   }
 
   renderLogout() {
@@ -76,7 +81,7 @@ class Navbar extends React.Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapProps = null;
+const mapProps = state => ({ currentUser: state.currentUser });
 
 const mapDispatch = dispatch => ({
   logout: () => {
