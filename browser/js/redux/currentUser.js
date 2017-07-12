@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
+
 /* ------------   ACTION CREATORS     ------------------ */
 
 const setCurrentUser  = user => ({ type: SET_CURRENT_USER, currentUser: user });
@@ -36,3 +37,11 @@ export const logInUser = ({email, password, history}) => dispatch => {
     });
 
 };
+
+export const logOutUser = (history) => dispatch => {
+  axios.get('/api/users/logout')
+  .then( () => {
+    dispatch(setCurrentUser({}))
+    history.push('/')
+  })
+}

@@ -34,6 +34,11 @@ router.post('/', function (req, res, next) {
   .catch(next);
 });
 
+router.get('/logout', function(req, res) {
+  req.session.destroy();
+  res.redirect('/');
+});
+
 router.get('/:id', function (req, res, next) {
   req.requestedUser.reload(User.options.scopes.populated())
   .then(function (requestedUser) {
@@ -70,4 +75,8 @@ router.post('/login', function (req, res, next) {
   })
   .catch(next)
 })
+
+
 module.exports = router;
+
+
