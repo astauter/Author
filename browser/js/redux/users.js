@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {logInUser} from './currentUser'
 
 /* -----------------    ACTIONS     ------------------ */
 
@@ -55,9 +56,14 @@ export const removeUser = id => dispatch => {
        .catch(err => console.error(`Removing user: ${id} unsuccesful`, err));
 };
 
-export const addUser = user => dispatch => {
+export const addUser = (user, history) => dispatch => {
   axios.post('/api/users', user)
-       .then(res => dispatch(create(res.data)))
+       .then( res => res.data)
+       .then(createdUser => {
+         dispatch(create(createdUser))
+        //  dispatch(logInUser(createdUser))
+         history.push(`./users/${createdUser.id}`)
+       })
        .catch(err => console.error(`Creating user: ${user} unsuccesful`, err));
 };
 
