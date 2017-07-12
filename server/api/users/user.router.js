@@ -58,16 +58,13 @@ router.delete('/:id', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  const {email, password} = req.body
-  User.findOne( {where: {
-    email, password
-  }})
+  User.findOne( {where: req.body})
   .then(function (user) {
     if (!user) {
       res.status(400).send('User not found')
     } else {
-    req.session.user = user
-    res.status(200).send('Welcome!')
+      req.session.user = user
+      res.json(user)
     }
   })
   .catch(next)

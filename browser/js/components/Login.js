@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { logInUser } from '../redux/currentUser';
 
 /* -----------------    COMPONENT     ------------------ */
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onLoginSubmit = this.onLoginSubmit.bind(this);
-  }
+function Login (props) {
 
-  render() {
-    const { message } = this.props;
+    const { message } = props;
     return (
       <div className="signin-container">
         <div className="buffer local">
-          <form onSubmit={this.onLoginSubmit}>
+          <form onSubmit={props.onLoginSubmit}>
             <div className="form-group">
               <label>email</label>
               <input
@@ -56,16 +52,31 @@ class Login extends React.Component {
     );
   }
 
-  onLoginSubmit(event) {
-    const { message } = this.props;
-    event.preventDefault();
-    console.log(`${message} isn't implemented yet`);
-  }
-}
+  // onLoginSubmit(event, history) {
+  //   event.preventDefault();
+
+  //   const email = event.target.email.value
+  //   const password = event.target.password.value
+
+
+
+
+  // }
+
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = () => ({ message: 'Log in' });
-const mapDispatch = null;
+const mapState = (state, ownProps) => ({ message: 'Log in', history: ownProps.history });
+const mapDispatch = (dispatch, ownProps) => {
+  return {
+    onLoginSubmit: function (event) {
+      event.preventDefault();
+      const email = event.target.email.value
+      const password = event.target.password.value
+
+      dispatch(logInUser({email, password, history: ownProps.history}))
+    }
+  }
+};
 
 export default connect(mapState, mapDispatch)(Login);
