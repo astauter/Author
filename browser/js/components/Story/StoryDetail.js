@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import ContentEditable from 'react-contenteditable';
 import { updateStory, fetchStory } from '../../redux/stories';
+import { canEditStory } from '../../utilityFuncs';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -49,6 +50,7 @@ class StoryDetail extends React.Component {
               className="form-like large-font"
               value={story.title}
               onChange={evt => this.onStoryUpdate({ title: evt.target.value })}
+              disabled={!canEditStory(this.props.currentUser, this.props.story)}
             />
           </li>
           <li><span className="muted">by</span></li>
@@ -103,10 +105,11 @@ class StoryDetail extends React.Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = ({ users, stories }, ownProps) => {
+const mapState = ({ users, stories, currentUser }, ownProps) => {
   const story = stories.find(aStory => aStory.id === +ownProps.match.params.id);
+  console.log('Inside mapState', story)
   const storyId = ownProps.storyId;
-  return { story, users, storyId };
+  return { story, users, storyId, currentUser };
 };
 
 const mapDispatch = (dispatch, ownProps) => {

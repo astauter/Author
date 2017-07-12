@@ -45,3 +45,12 @@ export const logOutUser = (history) => dispatch => {
     history.push('/')
   })
 }
+
+export const fetchSessionUser = () => dispatch => {
+  axios.get('/api/auth/me')
+    .then(res => res.data)
+    .then((user) => {
+      dispatch(setCurrentUser(user))
+    })
+    .catch(console.error);
+}
