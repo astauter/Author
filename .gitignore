@@ -4,6 +4,7 @@ build/
 # installed packages (better: `npm install` / `bower install`)
 node_modules
 bower_components
+ids.txt
 
 # OS-generated files
 .DS_Store
